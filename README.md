@@ -25,25 +25,7 @@ The assistant automatically knows when you're asking about weather vs. just want
 - Use the weather tool when needed
 - Have normal conversations otherwise
 
-## Example Interactions
-
-**Weather Questions:**
-```
-You: "What's the weather like in Seattle?"
-Assistant: "Let me check the weather in Seattle for you..." *uses weather tool*
-
-You: "Is it raining in London?"
-Assistant: "I'll look up the current weather in London..." *uses weather tool*
-```
-
-**Regular Chat:**
-```
-You: "Hello!"
-Assistant: "Hi there! How can I help you today?"
-
-You: "How are you?"
-Assistant: "I'm doing great, thanks for asking! Need any weather info or just want to chat?"
-```
+The agent should be able to talk to user and answer any question related to weather using the weather tool.
 
 ## Technical Details
 
@@ -52,14 +34,6 @@ Assistant: "I'm doing great, thanks for asking! Need any weather info or just wa
 - Basic state management for conversation flow
 - Clean, straightforward implementation
 
-## File Structure
-```
-weather_assistant/
-├── assistant.py       # Main LangGraph implementation
-├── tools.py          # Weather tool
-├── requirements.txt  # Dependencies
-└── README.md         # This file
-```
 
 ## Success Criteria
 

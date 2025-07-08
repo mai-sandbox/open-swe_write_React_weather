@@ -3,6 +3,7 @@
 import os
 import re
 import logging
+from dotenv import load_dotenv
 from typing import TypedDict, Annotated, Literal, Dict, Any
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_anthropic import ChatAnthropic
@@ -10,6 +11,9 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
 from tools import get_weather
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -209,4 +213,5 @@ if __name__ == "__main__":
     test_state = {"messages": [HumanMessage(content="What's the weather in Paris?")]}
     result = app.invoke(test_state)
     print(f"Response: {result['messages'][-1].content}")
+
 

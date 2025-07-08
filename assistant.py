@@ -4,6 +4,7 @@ import re
 import logging
 from dotenv import load_dotenv
 from typing import TypedDict, Annotated, Literal, Dict, Any
+from langgraph.graph.state import CompiledStateGraph
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_anthropic import ChatAnthropic
 from langgraph.graph import StateGraph, START, END
@@ -162,7 +163,7 @@ def route_message(state: State) -> Literal["chat", "weather"]:
         return "chat"
 
 
-def create_graph() -> StateGraph:
+def create_graph() -> CompiledStateGraph:
     """
     Create and compile the LangGraph workflow.
     
@@ -194,7 +195,7 @@ def create_graph() -> StateGraph:
     return workflow.compile()
 
 
-# Create the compiled graph
+# Create the compiled graph  
 app = create_graph()
 
 
@@ -207,6 +208,7 @@ if __name__ == "__main__":
     test_state = {"messages": [HumanMessage(content="What's the weather in Paris?")]}
     result = app.invoke(test_state)
     print(f"Response: {result['messages'][-1].content}")
+
 
 
 

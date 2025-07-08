@@ -2,7 +2,7 @@
 
 import os
 import logging
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 import requests
 from langchain_core.tools import tool
 
@@ -62,7 +62,7 @@ def get_weather(city: str) -> str:
             return "Error: Weather service authentication failed."
         elif response.status_code != 200:
             logger.error(f"API request failed with status code: {response.status_code}")
-            return f"Error: Unable to fetch weather data. Service temporarily unavailable."
+            return "Error: Unable to fetch weather data. Service temporarily unavailable."
         
         # Parse response
         data: Dict[str, Any] = response.json()
@@ -95,5 +95,6 @@ def get_weather(city: str) -> str:
         return "Error: Received unexpected response from weather service."
     except Exception as e:
         logger.error(f"Unexpected error in get_weather: {e}")
-        return f"Error: An unexpected error occurred while fetching weather data."
+        return "Error: An unexpected error occurred while fetching weather data."
+
 

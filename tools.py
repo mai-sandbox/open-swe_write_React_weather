@@ -44,10 +44,10 @@ def _get_weather_from_openweather(city: str, api_key: str) -> str:
         data = response.json()
         
         weather_info = (
-            f"Current weather in {data['name']}, {data['sys']['country']}:
-            f"Temperature: {data['main']['temp']}°C (feels like {data['main']['feels_like']}°C)
-            f"Condition: {data['weather'][0]['description'].title()}
-            f"Humidity: {data['main']['humidity']}%
+            f"Current weather in {data['name']}, {data['sys']['country']}:\n"
+            f"Temperature: {data['main']['temp']}°C (feels like {data['main']['feels_like']}°C)\n"
+            f"Condition: {data['weather'][0]['description'].title()}\n"
+            f"Humidity: {data['main']['humidity']}%\n"
             f"Wind: {data['wind'].get('speed', 0)} m/s"
         )
         
@@ -79,4 +79,5 @@ def _get_weather_from_wttr(city: str) -> str:
         return f"Sorry, I couldn't fetch weather data for {city} due to a network error. Please try again later."
     except Exception as e:
         return f"Sorry, I encountered an error while getting weather for {city}. Please try again."
+
 

@@ -110,9 +110,6 @@ def chat_node(state: State) -> Dict[str, Any]:
     # Initialize the LLM
     llm = ChatAnthropic(model="claude-3-haiku-20240307", temperature=0.7)
     
-    # Get the last message
-    last_message = state["messages"][-1]
-    
     # Generate response
     response = llm.invoke(state["messages"])
     
@@ -209,6 +206,7 @@ if __name__ == "__main__":
     test_state = {"messages": [HumanMessage(content="What's the weather in Paris?")]}
     result = app.invoke(test_state)
     print(f"Response: {result['messages'][-1].content}")
+
 
 
 

@@ -108,7 +108,7 @@ def chat_node(state: State) -> Dict[str, Any]:
         Updated state with LLM response
     """
     # Initialize the LLM
-    llm = ChatAnthropic(model="claude-3-haiku-20240307", temperature=0.7)
+    llm = ChatAnthropic(model_name="claude-3-haiku-20240307", temperature=0.7)
     
     # Generate response
     response = llm.invoke(state["messages"])
@@ -126,7 +126,8 @@ def weather_tool_node(state: State) -> Dict[str, Any]:
     Returns:
         Updated state with weather information
     """
-    user_message = state["messages"][-1].content if hasattr(state["messages"][-1], 'content') else str(state["messages"][-1])
+    last_message = state["messages"][-1]
+    user_message = last_message.content if hasattr(last_message, 'content') and isinstance(last_message.content, str) else str(last_message)
     
     # Extract city from the message
     city = extract_city_from_message(user_message)
@@ -150,7 +151,7 @@ def route_message(state: State) -> Literal["chat", "weather"]:
     """
     # Get the last message
     last_message = state["messages"][-1]
-    user_message = last_message.content if hasattr(last_message, 'content') else str(last_message)
+    user_message = last_message.content if hasattr(last_message, 'content') and isinstance(last_message.content, str) else str(last_message)
     
     # Check if it's a weather query
     if detect_weather_query(user_message):
@@ -206,6 +207,7 @@ if __name__ == "__main__":
     test_state = {"messages": [HumanMessage(content="What's the weather in Paris?")]}
     result = app.invoke(test_state)
     print(f"Response: {result['messages'][-1].content}")
+
 
 
 

@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
+from pydantic import SecretStr
 
 # Load environment variables
 load_dotenv()
@@ -63,10 +64,14 @@ def chat_node(state: State) -> State:
     """
     # Initialize LLM
     api_key = os.getenv("OPENAI_API_KEY", "dummy-key-for-testing")
+    # Convert to SecretStr if not None
+    secret_api_key = None
+    if api_key:
+        secret_api_key = SecretStr(api_key)
     llm = ChatOpenAI(
         model="gpt-3.5-turbo",
         temperature=0.7,
-        api_key=api_key
+        api_key=secret_api_key
     )
     
     # Get response from LLM
@@ -210,5 +215,6 @@ graph_builder.add_edge("chat", END)
 
 # Compile the graph
 compiled_graph = graph_builder.compile()
+
 
 

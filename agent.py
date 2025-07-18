@@ -178,9 +178,8 @@ graph_builder = StateGraph(State)
 graph_builder.add_node("chatbot", chatbot_node)
 graph_builder.add_node("weather", weather_node)
 
-# Add edges
-graph_builder.add_edge(START, "router")
-graph_builder.add_conditional_edges("router", router)
+# Add edges - use conditional edges from START with router function
+graph_builder.add_conditional_edges(START, router)
 graph_builder.add_edge("chatbot", END)
 graph_builder.add_edge("weather", END)
 
@@ -189,4 +188,3 @@ graph = graph_builder.compile()
 
 # Export the compiled graph as required by evaluation script
 compiled_graph = graph
-

@@ -9,6 +9,7 @@ chat and weather lookup functionality.
 from typing import TypedDict, List, Literal
 import os
 import re
+from typing import cast
 from dotenv import load_dotenv
 
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
@@ -61,10 +62,11 @@ def chat_node(state: State) -> State:
         Updated state with LLM response
     """
     # Initialize LLM
+    api_key = os.getenv("OPENAI_API_KEY", "dummy-key-for-testing")
     llm = ChatOpenAI(
         model="gpt-3.5-turbo",
         temperature=0.7,
-        api_key=os.getenv("OPENAI_API_KEY", "dummy-key-for-testing")
+        api_key=api_key
     )
     
     # Get response from LLM
@@ -89,7 +91,7 @@ def weather_node(state: State) -> State:
     # Get the last human message
     last_message = state["messages"][-1]
     if isinstance(last_message, HumanMessage):
-        message_text = last_message.content.lower()
+        message_text = str(last_message.content).lower()
         
         # Extract city name from the message
         # Simple pattern matching for city names
@@ -146,7 +148,7 @@ def router_function(state: State) -> Literal["chat", "weather"]:
     if not isinstance(last_message, HumanMessage):
         return "chat"
     
-    message_text = last_message.content.lower()
+    message_text = str(last_message.content).lower()
     
     # Weather-related keywords
     weather_keywords = [
@@ -208,4 +210,5 @@ graph_builder.add_edge("chat", END)
 
 # Compile the graph
 compiled_graph = graph_builder.compile()
+
 

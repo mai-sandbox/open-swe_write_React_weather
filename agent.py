@@ -9,7 +9,6 @@ chat and weather lookup functionality.
 from typing import TypedDict, List, Literal
 import os
 import re
-from typing import cast
 from dotenv import load_dotenv
 
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage

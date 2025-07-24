@@ -95,8 +95,12 @@ def weather_query_node(state: State):
             detected_city = match.group(1)
         
         if detected_city:
-            # Weather query detected with city - this will be handled by weather tool in next task
-            return {'messages': [{'role': 'assistant', 'content': f'I can help you check the weather in {detected_city}. Let me get that information for you.'}]}
+            # Weather query detected with city - use the weather tool
+            try:
+                weather_info = get_weather.invoke({"city": detected_city})
+                return {'messages': [{'role': 'assistant', 'content': weather_info}]}
+            except Exception as e:
+                return {'messages': [{'role': 'assistant', 'content': f'Sorry, I encountered an error getting weather information for {detected_city}. Please try again.'}]}
         else:
             # Weather query without specific city
             return {'messages': [{'role': 'assistant', 'content': 'I can help you check the weather! Please specify which city you\'d like to know about.'}]}

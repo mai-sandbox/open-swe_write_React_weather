@@ -25,6 +25,9 @@ def weather_query_node(state: State):
     pass
 
 # Add entry and exit points
+graph_builder.add_node("normal_conversation", normal_conversation_node)
+graph_builder.add_node("weather_query", weather_query_node)
+
 graph_builder.add_edge(START, "normal_conversation")
 graph_builder.add_edge("normal_conversation", "weather_query")
 graph_builder.add_edge("weather_query", END)

@@ -12,8 +12,12 @@ graph_builder = StateGraph(State)
 
 # Placeholder for normal conversation node
 def normal_conversation_node(state: State):
-    # This will be implemented in the next task
-    pass
+    # Respond to general user inputs
+    user_message = state['messages'][-1]['content'].lower()
+    if 'weather' not in user_message:
+        response = "I'm here to chat! How can I assist you today?"
+        return {'messages': [{'role': 'assistant', 'content': response}]}
+    return state
 
 # Placeholder for weather-related query node
 def weather_query_node(state: State):
@@ -30,4 +34,5 @@ graph = graph_builder.compile()
 
 # Export the compiled graph
 compiled_graph = graph
+
 

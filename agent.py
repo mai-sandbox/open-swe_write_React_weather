@@ -36,8 +36,51 @@ def normal_conversation_node(state: State):
 
 # Placeholder for weather-related query node
 def weather_query_node(state: State):
-    # This will be implemented in the next task
-    pass
+    # Detect weather-related queries and extract city information
+    user_message = state['messages'][-1]['content']
+    user_message_lower = user_message.lower()
+    
+    # Check for weather-related keywords
+    weather_keywords = ['weather', 'temperature', 'forecast', 'rain', 'sunny', 'cloudy', 'storm']
+    has_weather_keyword = any(keyword in user_message_lower for keyword in weather_keywords)
+    
+    if has_weather_keyword:
+        # Common city names and patterns to detect cities
+        # This is a simplified approach - in production, you'd use NER or a comprehensive city database
+        common_cities = [
+            'new york', 'london', 'paris', 'tokyo', 'berlin', 'madrid', 'rome', 'moscow',
+            'beijing', 'sydney', 'toronto', 'vancouver', 'montreal', 'chicago', 'boston',
+            'los angeles', 'san francisco', 'seattle', 'miami', 'denver', 'atlanta',
+            'houston', 'dallas', 'phoenix', 'philadelphia', 'detroit', 'minneapolis',
+            'amsterdam', 'barcelona', 'vienna', 'prague', 'budapest', 'warsaw',
+            'stockholm', 'oslo', 'copenhagen', 'helsinki', 'dublin', 'lisbon',
+            'mumbai', 'delhi', 'bangalore', 'chennai', 'kolkata', 'hyderabad',
+            'singapore', 'hong kong', 'seoul', 'bangkok', 'jakarta', 'manila'
+        ]
+        
+        # Look for city mentions in the user message
+        detected_city = None
+        for city in common_cities:
+            if city in user_message_lower:
+                detected_city = city.title()
+                break
+        
+        # Also check for patterns like "in [City]" or "weather in [City]"
+        import re
+        city_pattern = r'\bin\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)'
+        match = re.search(city_pattern, user_message)
+        if match and not detected_city:
+            detected_city = match.group(1)
+        
+        if detected_city:
+            # Weather query detected with city - this will be handled by weather tool in next task
+            return {'messages': [{'role': 'assistant', 'content': f'I can help you check the weather in {detected_city}. Let me get that information for you.'}]}
+        else:
+            # Weather query without specific city
+            return {'messages': [{'role': 'assistant', 'content': 'I can help you check the weather! Please specify which city you\'d like to know about.'}]}
+    
+    # If no weather keywords detected, pass through unchanged
+    return state
 
 # Add entry and exit points
 graph_builder.add_node("normal_conversation", normal_conversation_node)
@@ -52,6 +95,7 @@ graph = graph_builder.compile()
 
 # Export the compiled graph
 compiled_graph = graph
+
 
 
 

@@ -2,6 +2,9 @@ from typing import Annotated
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
+import json
+import random
+from langchain_core.tools import tool
 
 # Define the State class
 class State(TypedDict):
@@ -9,6 +12,25 @@ class State(TypedDict):
 
 # Initialize the StateGraph
 graph_builder = StateGraph(State)
+
+# Define the weather tool
+@tool
+def get_weather(city: str) -> str:
+    """Get current weather information for a city.
+    
+    Args:
+        city: The name of the city to get weather for
+        
+    Returns:
+        A string containing weather information for the city
+    """
+    # Simulate weather data (in a real implementation, you'd call a weather API)
+    weather_conditions = ["sunny", "cloudy", "rainy", "partly cloudy", "overcast"]
+    temperature = random.randint(15, 30)
+    condition = random.choice(weather_conditions)
+    
+    return f"Current weather in {city}: {condition}, {temperature}°C"
+
 
 # Placeholder for normal conversation node
 def normal_conversation_node(state: State):
@@ -95,6 +117,7 @@ graph = graph_builder.compile()
 
 # Export the compiled graph
 compiled_graph = graph
+
 
 
 

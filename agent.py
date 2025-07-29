@@ -41,7 +41,7 @@ class State(TypedDict):
 
 
 # Initialize the LLM with tools
-llm = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+llm = ChatAnthropic(model_name="claude-3-5-sonnet-20241022")
 tools = [get_weather]
 llm_with_tools = llm.bind_tools(tools)
 

@@ -38,7 +38,7 @@ def get_weather(city: str) -> str:
 # Initialize the LLM - using Anthropic as preferred model
 try:
     llm = init_chat_model("anthropic:claude-3-5-sonnet-20241022")
-except Exception:
+except Exception as e:
     try:
         llm = init_chat_model("openai:gpt-4o")
     except Exception:
